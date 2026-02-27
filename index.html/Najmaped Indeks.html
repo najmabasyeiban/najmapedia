@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAJMA PEDIA : Learns Japanese Antonyms The Easy Ways</title>
+    <style>
+        /* --- NEW COLOR PALETTE --- */
+        :root {
+            --primary: #3D5D91;    /* Dark Blue */
+            --sec-dark: #5A86CD;   /* Medium Blue */
+            --light: #F2DCDB;      /* Light Pink / Beige */
+            --sec-light: #F2AEBC;  /* Darker Pink / Rose */
+            --white: #ffffff;
+            --dark: #333333;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body { background-color: var(--light); color: var(--dark); }
+
+        /* --- NAVBAR & SEARCH --- */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .search-container input {
+            padding: 0.5rem 1rem; border-radius: 20px; border: none; outline: none; width: 250px;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: linear-gradient(rgba(61, 93, 145, 0.7), rgba(242, 174, 188, 0.8)), 
+                        url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?auto=format&fit=crop&q=80') center/cover;
+            height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; color: var(--white); padding: 2rem;
+        }
+        .hero h2 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        .btn-mulai {
+            background-color: var(--light); color: var(--primary); padding: 1rem 2rem; font-size: 1.2rem;
+            font-weight: bold; border-radius: 30px; text-decoration: none; transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-mulai:hover { background-color: var(--white); transform: scale(1.05); }
+
+        /* --- MAIN CONTENT --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        section { margin-bottom: 4rem; }
+        .section-title {
+            color: var(--primary); border-bottom: 3px solid var(--sec-dark);
+            padding-bottom: 0.5rem; margin-bottom: 1.5rem; font-size: 2rem;
+        }
+
+        /* --- DAILY TAIGO & GALLERY --- */
+        .daily-taigo {
+            background-color: var(--white); border-radius: 15px; padding: 2rem; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--sec-light);
+        }
+        .taigo-card-large { display: flex; justify-content: space-around; align-items: center; margin-top: 1.5rem; font-size: 2rem; }
+        .taigo-word { background-color: var(--light); padding: 1.5rem 3rem; border-radius: 10px; color: var(--primary); font-weight: bold; border: 2px solid var(--sec-light); }
+        .taigo-word span { display: block; font-size: 1rem; color: var(--dark); font-weight: normal; }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+        .gallery-card {
+            background-color: var(--white); border-radius: 10px; padding: 1.5rem; text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-top: 4px solid var(--sec-dark); transition: 0.3s;
+        }
+        .gallery-card:hover { transform: translateY(-5px); border-top: 4px solid var(--sec-light); }
+        .vs { color: var(--sec-dark); font-weight: bold; margin: 0.5rem 0; }
+
+        /* --- TAIGO QUIZ --- */
+        .quiz-container { background-color: var(--sec-light); border-radius: 15px; padding: 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .score-board { background-color: var(--primary); color: var(--white); padding: 0.5rem 1.5rem; border-radius: 20px; font-weight: bold; font-size: 1.2rem; }
+        .quiz-modes { display: flex; gap: 1rem; }
+        .btn-mode { padding: 0.5rem 1rem; background-color: var(--white); color: var(--primary); border: 2px solid var(--primary); border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s;}
+        .btn-mode.active, .btn-mode:hover { background-color: var(--primary); color: var(--white); }
+        .quiz-area { background-color: var(--white); padding: 2rem; border-radius: 10px; text-align: center; min-height: 300px; position: relative;}
+        .quiz-section { display: none; }
+        .quiz-section.active { display: block; }
+
+        /* Buttons & Hints */
+        .btn-hint {
+            background-color: var(--warning); color: var(--dark); border: none; padding: 0.5rem 1rem;
+            border-radius: 20px; font-weight: bold; cursor: pointer; margin-bottom: 1rem; transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-hint:hover { transform: scale(1.05); }
+        .hint-text { color: var(--primary); font-size: 1.2rem; font-weight: bold; margin-bottom: 1rem; min-height: 25px;}
+
+        /* Mode Pilihan Ganda */
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+        .btn-option { padding: 1rem; background-color: var(--light); border: 2px solid var(--sec-dark); border-radius: 8px; cursor: pointer; font-size: 1.5rem; font-weight: bold; transition: 0.2s; color: var(--primary);}
+        .btn-option:hover { background-color: var(--sec-dark); color: var(--white); }
+
+        /* Mode Tebak Kata */
+        .input-guess { padding: 1rem; font-size: 1.2rem; border-radius: 8px; border: 2px solid var(--sec-dark); width: 60%; margin-top: 1rem; text-align: center; }
+        .btn-submit { padding: 1rem 2rem; font-size: 1.2rem; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; margin-left: 10px; transition: 0.2s;}
+        .btn-submit:hover { background-color: var(--sec-dark); }
+
+        /* Mode Drag & Match */
+        .drag-container { display: flex; justify-content: space-around; margin-top: 1.5rem; gap: 2rem;}
+        .drag-column { flex: 1; display: flex; flex-direction: column; gap: 1rem; }
+        .draggable { background-color: var(--primary); color: var(--white); padding: 1rem; border-radius: 8px; cursor: grab; font-weight: bold; font-size: 1.5rem; transition: 0.2s;}
+        .draggable:active { transform: scale(0.95); }
+        .droptarget { background-color: var(--light); border: 2px dashed var(--sec-dark); padding: 1rem; border-radius: 8px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
+        .match-row { display: flex; align-items: center; gap: 1rem; background: var(--white); padding: 10px; border-radius: 8px; border: 2px solid var(--light);}
+        .match-label { width: 50%; font-weight: bold; font-size: 1.5rem; color: var(--primary); text-align: center;}
+        .match-drop { width: 50%; }
+
+        footer { background-color: var(--primary); color: var(--white); text-align: center; padding: 1.5rem; margin-top: 2rem; }
+
+        /* --- POPUP STYLES --- */
+        .popup-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        .popup-overlay.show { display: flex; animation: fadeIn 0.3s; }
+        .popup-content {
+            background-color: var(--white); padding: 2rem 3rem; border-radius: 20px;
+            text-align: center; transform: scale(0.5); opacity: 0; font-size: 2rem; font-weight: bold;
+        }
+        .popup-overlay.show .popup-content {
+            animation: popUpAnim 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .popup-correct { color: var(--success); border: 6px solid var(--success); }
+        .popup-wrong { color: var(--danger); border: 6px solid var(--danger); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popUpAnim { 
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NAJMA PEDIA</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Find your word…" onkeyup="searchWord()">
+        </div>
+    </header>
+
+    <section class="hero">
+        <h2>Learns Japanese Antonyms The Easy Ways</h2>
+        <p>Kuasai kosakata dan Kanji Jepang yang berlawanan (Taigo) dengan metode yang mudah dan menyenangkan.</p>
+        <a href="#belajar" class="btn-mulai">Mulai Belajar</a>
+    </section>
+
+    <div class="container" id="belajar">
+        
+        <section>
+            <h2 class="section-title">🌟 Daily Taigo</h2>
+            <div class="daily-taigo">
+                <p>Pasangan antonim hari ini! Pelajari dan ingat ya.</p>
+                <div class="taigo-card-large" id="dailyTaigoContainer"></div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">📚 Kotoba Gallery</h2>
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </section>
+
+        <section>
+            <h2 class="section-title">🎮 Taigo Quiz</h2>
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <div class="quiz-modes">
+                        <button class="btn-mode active" onclick="switchMode('pg', this)">Pilihan Ganda</button>
+                        <button class="btn-mode" onclick="switchMode('tebak', this)">Tebak Kata</button>
+                        <button class="btn-mode" onclick="switchMode('drag', this)">Drag & Match</button>
+                    </div>
+                    <div class="score-board" id="scoreDisplay">Skor: 0</div>
+                </div>
+                
+                <div class="quiz-area">
+                    <div id="quiz-pg" class="quiz-section active">
+                        <button class="btn-hint" onclick="showPGHint()">💡 Bantuan (-2 Poin)</button>
+                        <div class="hint-text" id="pgHintText"></div>
+                        <h3 id="pgQuestion">Lawan kata dari: ...</h3>
+                        <div class="options" id="pgOptions"></div>
+                        <p id="pgFeedback" style="margin-top: 1rem; font-weight: bold;"></p>
+                    </div>
+
+                    <div id="quiz-tebak" class="quiz-section">
+                        <button class="btn-hint" onclick="showTebakHint()">💡 Bantuan (-2 Poin)</button>
+                        <div class="hint-text" id="tebakHintText"></div>
+                        <h3 id="tebakQuestion">Ketik romaji lawan kata dari: ...</h3>
+                        <input type="text" id="tebakInput" class="input-guess" placeholder="Ketik jawaban di sini... (contoh: chiisai)">
+                        <button class="btn-submit" onclick="checkTebak()">Jawab</button>
+                        <p id="tebakFeedback" style="margin-top: 1rem; font-weight: bold;"></p>
+                    </div>
+
+                    <div id="quiz-drag" class="quiz-section">
+                        <button class="btn-hint" onclick="showDragHint()">💡 Bantuan (-2 Poin)</button>
+                        <div class="hint-text" id="dragHintText"></div>
+                        <h3>Tarik kotak biru ke area putus-putus yang sesuai!</h3>
+                        <button onclick="loadDragQuiz()" style="margin-top: 10px; padding: 5px 15px; cursor: pointer; border-radius: 5px; border: none; background: var(--sec-dark); color: white; font-weight: bold;">Acak Ulang</button>
+                        <div class="drag-container">
+                            <div class="drag-column" id="dragItemsContainer"></div>
+                            <div class="drag-column" id="dropZonesContainer"></div>
+                        </div>
+                        <p id="dragFeedback" style="margin-top: 1rem; font-weight: bold;"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 NAJMA PEDIA. All rights reserved.</p>
+    </footer>
+
+    <div id="resultPopup" class="popup-overlay">
+        <div id="popupBox" class="popup-content">
+            <span id="popupText">HEBAT!</span>
+        </div>
+    </div>
+
+    <script>
+        // Database Kosakata Antonim (30 Pasang)
+        const antonyms = [
+            { w1: "大きい", r1: "Ookii (Besar)", w2: "小さい", r2: "Chiisai (Kecil)", ans: "chiisai" },
+            { w1: "高い", r1: "Takai (Tinggi/Mahal)", w2: "低い", r2: "Hikui (Rendah)", ans: "hikui" },
+            { w1: "新しい", r1: "Atarashii (Baru)", w2: "古い", r2: "Furui (Lama)", ans: "furui" },
+            { w1: "暑い", r1: "Atsui (Panas - cuaca)", w2: "寒い", r2: "Samui (Dingin - cuaca)", ans: "samui" },
+            { w1: "長い", r1: "Nagai (Panjang)", w2: "短い", r2: "Mijikai (Pendek)", ans: "mijikai" },
+            { w1: "良い", r1: "Yoi/Ii (Bagus)", w2: "悪い", r2: "Warui (Buruk)", ans: "warui" },
+            { w1: "明るい", r1: "Akarui (Terang)", w2: "暗い", r2: "Kurai (Gelap)", ans: "kurai" },
+            { w1: "強い", r1: "Tsuyoi (Kuat)", w2: "弱い", r2: "Yowai (Lemah)", ans: "yowai" },
+            { w1: "重い", r1: "Omoi (Berat)", w2: "軽い", r2: "Karui (Ringan)", ans: "karui" },
+            { w1: "広い", r1: "Hiroi (Luas)", w2: "狭い", r2: "Semai (Sempit)", ans: "semai" },
+            { w1: "速い", r1: "Hayai (Cepat)", w2: "遅い", r2: "Osoi (Lambat)", ans: "osoi" },
+            { w1: "遠い", r1: "Tooi (Jauh)", w2: "近い", r2: "Chikai (Dekat)", ans: "chikai" },
+            { w1: "多い", r1: "Ooi (Banyak)", w2: "少ない", r2: "Sukunai (Sedikit)", ans: "sukunai" },
+            { w1: "太い", r1: "Futoi (Tebal/Gemuk)", w2: "細い", r2: "Hosoi (Tipis/Kurus)", ans: "hosoi" },
+            { w1: "深い", r1: "Fukai (Dalam)", w2: "浅い", r2: "Asai (Dangkal)", ans: "asai" },
+            { w1: "硬い", r1: "Katai (Keras)", w2: "柔らかい", r2: "Yawarakai (Lembut)", ans: "yawarakai" },
+            { w1: "甘い", r1: "Amai (Manis)", w2: "辛い", r2: "Karai (Pedas)", ans: "karai" },
+            { w1: "熱い", r1: "Atsui (Panas - benda)", w2: "冷たい", r2: "Tsumetai (Dingin - benda)", ans: "tsumetai" },
+            { w1: "高い", r1: "Takai (Mahal)", w2: "安い", r2: "Yasui (Murah)", ans: "yasui" },
+            { w1: "嬉しい", r1: "Ureshii (Senang)", w2: "悲しい", r2: "Kanashii (Sedih)", ans: "kanashii" },
+            { w1: "好き", r1: "Suki (Suka)", w2: "嫌い", r2: "Kirai (Benci)", ans: "kirai" },
+            { w1: "上手", r1: "Jouzu (Pintar/Mahir)", w2: "下手", r2: "Heta (Buruk/Tidak Mahir)", ans: "heta" },
+            { w1: "簡単", r1: "Kantan (Mudah)", w2: "難しい", r2: "Muzukashii (Sulit)", ans: "muzukashii" },
+            { w1: "安全", r1: "Anzen (Aman)", w2: "危険", r2: "Kiken (Bahaya)", ans: "kiken" },
+            { w1: "静か", r1: "Shizuka (Tenang)", w2: "うるさい", r2: "Urusai (Berisik)", ans: "urusai" },
+            { w1: "綺麗", r1: "Kirei (Bersih/Cantik)", w2: "汚い", r2: "Kitanai (Kotor)", ans: "kitanai" },
+            { w1: "起きる", r1: "Okiru (Bangun)", w2: "寝る", r2: "Neru (Tidur)", ans: "neru" },
+            { w1: "開ける", r1: "Akeru (Membuka)", w2: "閉める", r2: "Shimeru (Menutup)", ans: "shimeru" },
+            { w1: "乗る", r1: "Noru (Naik kendaraan)", w2: "降りる", r2: "Oriru (Turun)", ans: "oriru" },
+            { w1: "勝つ", r1: "Katsu (Menang)", w2: "負ける", r2: "Makeru (Kalah)", ans: "makeru" }
+        ];
+
+        let score = 0;
+
+        function updateScore(points) {
+            score += points;
+            document.getElementById('scoreDisplay').innerText = `Skor: ${score}`;
+        }
+
+        // --- POPUP FUNCTION ---
+        function showPopupResult(isCorrect) {
+            const popupOverlay = document.getElementById('resultPopup');
+            const popupBox = document.getElementById('popupBox');
+            const popupText = document.getElementById('popupText');
+
+            if (isCorrect) {
+                popupBox.className = 'popup-content popup-correct';
+                popupText.innerText = 'HEBAT! 🎉';
+            } else {
+                popupBox.className = 'popup-content popup-wrong';
+                popupText.innerText = 'AYO COBA LAGI JANGAN MENYERAH 💪';
+            }
+
+            popupOverlay.classList.add('show');
+            setTimeout(() => {
+                popupOverlay.classList.remove('show');
+            }, 1500); // Popup hilang setelah 1.5 detik
+        }
+
+        // INIT WEB
+        window.onload = () => {
+            setDailyTaigo();
+            renderGallery(antonyms);
+            loadPGQuiz();
+            loadTebakQuiz();
+            loadDragQuiz();
+        };
+
+        function setDailyTaigo() {
+            const todayIndex = new Date().getDay() * 3; 
+            const pair = antonyms[todayIndex % antonyms.length];
+            document.getElementById('dailyTaigoContainer').innerHTML = `
+                <div class="taigo-word">${pair.w1} <span>${pair.r1}</span></div>
+                <div class="vs">VS</div>
+                <div class="taigo-word">${pair.w2} <span>${pair.r2}</span></div>
+            `;
+        }
+
+        function renderGallery(data) {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+            data.forEach(pair => {
+                grid.innerHTML += `
+                    <div class="gallery-card">
+                        <h3>${pair.w1}</h3>
+                        <p style="color:var(--sec-dark); font-size: 0.9rem">${pair.r1}</p>
+                        <div class="vs">↹</div>
+                        <h3>${pair.w2}</h3>
+                        <p style="color:var(--sec-dark); font-size: 0.9rem">${pair.r2}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function searchWord() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = antonyms.filter(pair => 
+                pair.w1.toLowerCase().includes(input) || pair.w2.toLowerCase().includes(input) ||
+                pair.r1.toLowerCase().includes(input) || pair.r2.toLowerCase().includes(input)
+            );
+            renderGallery(filtered);
+        }
+
+        function switchMode(mode, btnElement) {
+            document.querySelectorAll('.quiz-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.btn-mode').forEach(el => el.classList.remove('active'));
+            document.getElementById('quiz-' + mode).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // --- 1. PILIHAN GANDA ---
+        let currentPGIndex = 0;
+        let pgHintUsed = false;
+
+        function loadPGQuiz() {
+            pgHintUsed = false;
+            document.getElementById('pgHintText').innerText = '';
+            const quizWord = antonyms[currentPGIndex];
+            document.getElementById('pgQuestion').innerHTML = `Apa lawan kata dari: <br><br> <span style="color:var(--primary); font-size:3rem;">${quizWord.w1}</span>`;
+            
+            let options = [quizWord];
+            while(options.length < 4) {
+                let randomPair = antonyms[Math.floor(Math.random() * antonyms.length)];
+                if(!options.includes(randomPair)) options.push(randomPair);
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            const optionsContainer = document.getElementById('pgOptions');
+            optionsContainer.innerHTML = '';
+            document.getElementById('pgFeedback').innerText = '';
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.innerHTML = `<strong>${opt.w2}</strong>`;
+                btn.onclick = () => checkPGAnswer(opt.w2, quizWord.w2);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function showPGHint() {
+            if(pgHintUsed) return;
+            updateScore(-2);
+            pgHintUsed = true;
+            const quizWord = antonyms[currentPGIndex];
+            document.getElementById('pgHintText').innerText = `Petunjuk: ${quizWord.w1} dibaca "${quizWord.r1}"`;
+        }
+
+        function checkPGAnswer(selected, correct) {
+            const feedback = document.getElementById('pgFeedback');
+            if(selected === correct) {
+                showPopupResult(true);
+                updateScore(10);
+                feedback.style.color = 'var(--success)';
+                feedback.innerText = '+10 Poin!';
+                setTimeout(() => {
+                    currentPGIndex = Math.floor(Math.random() * antonyms.length);
+                    loadPGQuiz();
+                }, 1600); // Tunggu popup selesai baru ganti soal
+            } else {
+                showPopupResult(false);
+                updateScore(-5);
+                feedback.style.color = 'var(--danger)';
+                feedback.innerText = '-5 Poin.';
+            }
+        }
+
+        // --- 2. TEBAK KATA ---
+        let currentTebakIndex = 5;
+        let tebakHintUsed = false;
+
+        function loadTebakQuiz() {
+            tebakHintUsed = false;
+            document.getElementById('tebakHintText').innerText = '';
+            const quizWord = antonyms[currentTebakIndex];
+            document.getElementById('tebakQuestion').innerHTML = `Ketik romaji lawan kata dari: <br><br> <span style="color:var(--primary); font-size:3rem;">${quizWord.w1}</span>`;
+            document.getElementById('tebakInput').value = '';
+            document.getElementById('tebakFeedback').innerText = '';
+        }
+
+        function showTebakHint() {
+            if(tebakHintUsed) return;
+            updateScore(-2);
+            tebakHintUsed = true;
+            const quizWord = antonyms[currentTebakIndex];
+            document.getElementById('tebakHintText').innerText = `Petunjuk: ${quizWord.w1} dibaca "${quizWord.r1}"`;
+        }
+
+        function checkTebak() {
+            const input = document.getElementById('tebakInput').value.toLowerCase().trim();
+            const correctAns = antonyms[currentTebakIndex].ans;
+            const feedback = document.getElementById('tebakFeedback');
+
+            if(input === correctAns) {
+                showPopupResult(true);
+                updateScore(15);
+                feedback.style.color = 'var(--success)';
+                feedback.innerText = `+15 Poin! Jawaban: ${antonyms[currentTebakIndex].w2} (${antonyms[currentTebakIndex].r2})`;
+                setTimeout(() => {
+                    currentTebakIndex = Math.floor(Math.random() * antonyms.length);
+                    loadTebakQuiz();
+                }, 1600);
+            } else {
+                showPopupResult(false);
+                updateScore(-5);
+                feedback.style.color = 'var(--danger)';
+                feedback.innerText = '-5 Poin.';
+            }
+        }
+
+        // --- 3. DRAG & MATCH ---
+        let dragHintUsed = false;
+
+        function loadDragQuiz() {
+            dragHintUsed = false;
+            document.getElementById('dragHintText').innerText = '';
+            const dragItems = document.getElementById('dragItemsContainer');
+            const dropZones = document.getElementById('dropZonesContainer');
+            document.getElementById('dragFeedback').innerText = '';
+            dragItems.innerHTML = ''; dropZones.innerHTML = '';
+
+            let shuffled = [...antonyms].sort(() => 0.5 - Math.random()).slice(0, 5);
+            let targetOrder = [...shuffled].sort(() => 0.5 - Math.random());
+
+            targetOrder.forEach((item, index) => {
+                dragItems.innerHTML += `
+                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="drag-${item.ans}">
+                        ${item.w2}
+                    </div>
+                `;
+            });
+
+            shuffled.forEach((item) => {
+                dropZones.innerHTML += `
+                    <div class="match-row">
+                        <div class="match-label" data-kanji="${item.w1}">${item.w1} <br> <span style="color:var(--sec-dark); font-size:1.2rem;">↹</span> </div>
+                        <div class="match-drop droptarget" ondrop="drop(event)" ondragover="allowDrop(event)" data-match="drag-${item.ans}">
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function showDragHint() {
+            if(dragHintUsed) return;
+            updateScore(-2);
+            dragHintUsed = true;
+            document.getElementById('dragHintText').innerText = `Petunjuk: Huruf romaji telah dimunculkan!`;
+            
+            document.querySelectorAll('.draggable').forEach(el => {
+                const id = el.id.replace('drag-', '');
+                const pair = antonyms.find(p => p.ans === id);
+                if(pair && !el.innerHTML.includes(pair.r2)) {
+                    el.innerHTML += `<br><span style="font-size:1rem; font-weight:normal;">${pair.r2}</span>`;
+                }
+            });
+
+            document.querySelectorAll('.match-label').forEach(el => {
+                const kanji = el.getAttribute('data-kanji');
+                const pair = antonyms.find(p => p.w1 === kanji);
+                if(pair && !el.innerHTML.includes(pair.r1)) {
+                    el.innerHTML = `${kanji}<br><span style="font-size:1rem; font-weight:normal; color:var(--dark);">${pair.r1}</span><br><span style="color:var(--sec-dark); font-size:1.2rem;">↹</span>`;
+                }
+            });
+        }
+
+        let dragMatchCount = 0;
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const draggedEl = document.getElementById(data);
+            const dropZone = ev.target;
+
+            if(dropZone.classList.contains('droptarget') && dropZone.children.length === 0) {
+                const matchId = dropZone.getAttribute('data-match');
+                
+                if(data === matchId) { 
+                    dropZone.appendChild(draggedEl);
+                    draggedEl.setAttribute('draggable', 'false');
+                    draggedEl.style.cursor = 'default';
+                    draggedEl.style.backgroundColor = 'var(--success)';
+                    
+                    showPopupResult(true); // Popup untuk setiap kotak yang benar
+                    updateScore(10);
+                    dragMatchCount++;
+                    document.getElementById('dragFeedback').style.color = 'var(--success)';
+                    document.getElementById('dragFeedback').innerText = '+10 Poin!';
+
+                    if(dragMatchCount === 5) {
+                        setTimeout(() => {
+                            alert("Hebat! Anda menyelesaikan Drag & Match! +50 Poin Bonus!");
+                            updateScore(50);
+                            dragMatchCount = 0;
+                            loadDragQuiz();
+                        }, 1600); // Beri jeda agar popup terakhir bisa selesai tampil
+                    }
+                } else { 
+                    showPopupResult(false); // Popup salah
+                    updateScore(-5);
+                    document.getElementById('dragFeedback').style.color = 'var(--danger)';
+                    document.getElementById('dragFeedback').innerText = '-5 Poin!';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
